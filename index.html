@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Освітній VR проєкт — 3D-координатна система</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; color: white; margin-bottom: 40px; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .card { background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; overflow: hidden; transition: transform 0.3s ease; }
+        .card:hover { transform: translateY(-5px); }
+        .card-header { background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 20px; text-align: center; }
+        .card-body { padding: 30px; }
+        .tech-badge { display: inline-block; background: #e3f2fd; color: #1976d2; padding: 5px 15px; border-radius: 20px; margin: 5px; font-size: 0.9rem; }
+        .btn { display: inline-block; padding: 15px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 25px; transition: background 0.3s ease; margin: 10px; }
+        .btn:hover { background: #5a67d8; }
+        .btn-secondary { background: #764ba2; }
+        .btn-secondary:hover { background: #6b4c96; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .feature { text-align: center; padding: 20px; }
+        .feature-icon { font-size: 3rem; margin-bottom: 15px; }
+        .author-info { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 30px; }
+        .ml-notice { background: linear-gradient(45deg, #ff6b6b, #ffa500); color: white; padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>3D-координатна система (A.1.4)</h1>
+            <p>Інтерактивне вивчення просторових координат та векторів за допомогою VR-технологій</p>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>Інформація про проєкт</h2>
+            </div>
+            <div class="card-body">
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Мета проекту</h3>
+                        <p>Дослідження та наочне вивчення розташування точок у тривимірному просторі, а також візуалізація базових операцій над векторами.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">👥</div>
+                        <h3>Цільова аудиторія</h3>
+                        <p>Учні 10-11 класів та студенти спеціальності Середня освіта (Математика та Інформатика)</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📱</div>
+                        <h3>Платформа</h3>
+                        <p>Мобільні пристрої та ПК з підтримкою WebGL</p>
+                    </div>
+                </div>
+                
+                <div class="ml-notice" id="ml-notice" style="display: none;">
+                    Цей проект включає інтеграцію машинного навчання для студентів інформатики
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <span class="tech-badge">A-Frame</span>
+                    <span class="tech-badge">Three.js</span>
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge" id="ml-badge" style="display: none;">TensorFlow.js</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Демонстрація</h2>
+            </div>
+            <div class="card-body" style="text-align: center;">
+                <p>Натисніть кнопку нижче, щоб запустити інтерактивний AR/VR досвід:</p>
+                <a href="./demonst.html" class="btn">Запустити демо</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Функціональність</h2>
+            </div>
+            <div class="card-body">
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Інтерактивність</h3>
+                        <p>Динамічна зміна координат користувачем та миттєва перебудова векторів на сцені.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📚</div>
+                        <h3>Освітній контент</h3>
+                        <p>Проведення операцій додавання, віднімання векторів та обчислення їх скалярного добутку.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🌐</div>
+                        <h3>Візуалізація</h3>
+                        <p>Побудова тривимірної системи координат із можливістю повного огляду та обертання сцени.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Технічні деталі</h2>
+            </div>
+            <div class="card-body">
+                <h3>Системні вимоги:</h3>
+                <ul style="margin: 15px 0; padding-left: 30px;">
+                    <li>Мобільний пристрій з підтримкою WebGL</li>
+                    <li>Сучасний браузер (Chrome, Firefox, Safari)</li>
+                    <li>Камера та акселерометр</li>
+                    <li id="ar-requirements" style="display: none;">Підтримка WebXR або ARCore/ARKit</li>
+                </ul>
+                <h3>Використані технології:</h3>
+                <div id="tech-list">
+                    </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Документація</h2>
+            </div>
+            <div class="card-body" style="text-align: center;">
+                <a href="./docs/user-guide.md" class="btn">Посібник користувача</a>
+                <a href="./docs/technical-docs.md" class="btn btn-secondary">Технічна документація</a>
+                <a href="./README.md" class="btn">README</a>
+            </div>
+        </div>
+
+        <div class="author-info">
+            <h3>Автор проєкту</h3>
+            <p><strong>Ім'я:</strong> Січкар Валентин Сергійович</p>
+            <p><strong>Група:</strong> МІм-25</p>
+            <p><strong>Спеціальність:</strong> Середня освіта (Математика та Інформатика)</p>
+            <p><strong>Викладач:</strong> Михайло Моїсеєнко</p>
+            <p><strong>Дисципліна:</strong> Інноваційні цифрові технології в освіті</p>
+            <p><strong>Рік:</strong> 2026</p>
+        </div>
+    </div>
+
+    <script>
+        // Визначення типу проєкту та налаштування інтерфейсу
+        const projectType = 'VR'; // Встановлюється згідно завдання
+        const isCSStudent = 'false'; // true для студентів інформатики
+
+        // Налаштування інтерфейсу залежно від типу проєкту
+        document.addEventListener('DOMContentLoaded', function() {
+            setupProjectInterface(projectType, isCSStudent === 'true');
+        });
+
+        function setupProjectInterface(type, includeML) {
+            const techList = document.getElementById('tech-list');
+            const mlNotice = document.getElementById('ml-notice');
+            const mlBadge = document.getElementById('ml-badge');
+            const arRequirements = document.getElementById('ar-requirements');
+            let technologies = [];
+
+            switch(type) {
+                case 'VR':
+                    technologies = ['A-Frame', 'Three.js', 'WebGL', 'WebVR'];
+                    break;
+                case 'AR MARKER':
+                    technologies = ['MindAR', 'AR.js', 'Three.js', 'WebRTC'];
+                    arRequirements.style.display = 'list-item';
+                    break;
+                case 'AR MARKERLESS':
+                    technologies = ['WebXR', 'Three.js', 'WebGL', 'ARCore/ARKit'];
+                    arRequirements.style.display = "list-item";
+                    break;
+            }
+
+        }
+    </script>
+</body>
+</html>

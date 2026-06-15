@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D-Симулятор векторів</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f4f7f6;
+        }
+        .control-panel {
+            width: 350px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 20px;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+        .header h1 { font-size: 1.3rem; color: #2c3e50; margin-bottom: 5px; }
+        .header p { font-size: 0.85rem; color: #7f8c8d; }
+        
+        .vector-input {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: center;
+        }
+        .inline-vector {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .vector-name { font-weight: bold; font-style: italic; }
+        .inline-vector input {
+            width: 50px;
+            padding: 4px;
+            text-align: center;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .inline-vector input::-webkit-outer-spin-button,
+        .inline-vector input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .operations { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .btn {
+            padding: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #2980b9; }
+        
+        .result-panel {
+            background: #e8f4f8;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            min-height: 60px;
+        }
+        .result-panel h3 { font-size: 0.9rem; color: #2c3e50; margin-bottom: 5px; }
+        .result-panel p { font-size: 1.1rem; color: #27ae60; font-family: monospace; font-weight: bold; }
+        
+        .scene-container { flex: 1; position: relative; cursor: grab; }
+        .scene-container:active { cursor: grabbing; }
+        .back-link { font-size: 0.85rem; color: #7f8c8d; text-decoration: none; margin-top: auto; text-align: center; }
+        .back-link:hover { color: #3498db; }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <div class="header">
+            <h1>Панель керування</h1>
+            <p>A.1.4: Операції над векторами</p>
+        </div>
+
+        <div class="vector-input">
+            <div class="inline-vector">
+                <span class="vector-name">a</span> (
+                <input type="number" id="ax" value="2" step="0.5"> ;
+                <input type="number" id="ay" value="3" step="0.5"> ;
+                <input type="number" id="az" value="1" step="0.5"> )
+            </div>
+        </div>
+
+        <div class="vector-input">
+            <div class="inline-vector">
+                <span class="vector-name">b</span> (
+                <input type="number" id="bx" value="1" step="0.5"> ;
+                <input type="number" id="by" value="-2" step="0.5"> ;
+                <input type="number" id="bz" value="2" step="0.5"> )
+            </div>
+        </div>
+
+        <div class="operations">
+            <button class="btn" id="btn-add">Додавання (a + b)</button>
+            <button class="btn" id="btn-sub">Віднімання (a - b)</button>
+            <button class="btn" id="btn-dot">Скалярний добуток</button>
+        </div>
+
+        <div class="result-panel">
+            <h3>Результат:</h3>
+            <p id="result-output">Оберіть дію</p>
+        </div>
+
+        <a href="./index.html" class="back-link">← Повернутися до опису</a>
+    </div>
+
+    <div class="scene-container" id="canvas-area">
+        <div class="hint">Затисніть ліву кнопку миші для обертання сцени навколо осі Y</div>
+
+        <a-scene embedded background="color: #1e1e1e">
+            <a-light type="ambient" color="#777"></a-light>
+            <a-light type="directional" position="5 10 7" intensity="0.8"></a-light>
+
+            <a-entity id="space-rotator" rotation="0 35 0">
+                                
+                <a-sphere color="white" radius="0.1" position="0 0 0"></a-sphere>
+
+                <a-entity>
+                    <a-cylinder color="#ff4757" radius="0.03" height="10" position="5 0 0" rotation="0 0 -90"></a-cylinder>
+                    <a-cone color="#ff4757" radius-bottom="0.12" height="0.4" position="10 0 0" rotation="0 0 -90"></a-cone>
+                    <a-text value="X" color="#ff4757" position="10.5 0.4 0" scale="3 3 3" align="center" side="double"></a-text>
+                </a-entity>
+
+                <a-entity>
+                    <a-cylinder color="#2ed573" radius="0.03" height="10" position="0 5 0"></a-cylinder>
+                    <a-cone color="#2ed573" radius-bottom="0.12" height="0.4" position="0 10 0"></a-cone>
+                    <a-text value="Y" color="#2ed573" position="0.4 10.5 0" scale="3 3 3" align="center" side="double"></a-text>
+                </a-entity>
+
+                <a-entity>
+                    <a-cylinder color="#1e90ff" radius="0.03" height="10" position="0 0 5" rotation="90 0 0"></a-cylinder>
+                    <a-cone color="#1e90ff" radius-bottom="0.12" height="0.4" position="0 0 10" rotation="90 0 0"></a-cone>
+                    <a-text value="Z" color="#1e90ff" position="0 0.5 10.5" scale="3 3 3" align="center" side="double"></a-text>
+                </a-entity>
+
+                <a-entity id="vectors-container"></a-entity>
+
+            </a-entity>
+
+            <a-entity position="0 7 13" rotation="-25 0 0">
+                <a-camera look-controls="enabled: false" wasd-controls="enabled: false"></a-camera>
+            </a-entity>
+        </a-scene>
+    </div>
+
+    <script src="src/script.js"></script>
+</body>
+</html>
