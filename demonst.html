@@ -28,30 +28,6 @@
         .header h1 { font-size: 1.3rem; color: #2c3e50; margin-bottom: 5px; }
         .header p { font-size: 0.85rem; color: #7f8c8d; }
         
-        /* Перемикач 2D/3D */
-        .toggle-container {
-            background: #e8f4f8;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #bdc3c7;
-            display: flex;
-            align-items: center;
-        }
-        .toggle-container label {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            color: #2c3e50;
-            width: 100%;
-        }
-        .toggle-container input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
         .vector-input {
             background: #ffffff;
             padding: 12px;
@@ -70,7 +46,7 @@
         }
         .vector-name { font-weight: bold; font-style: italic; }
         .inline-vector input {
-            width: 45px;
+            width: 50px;
             padding: 4px;
             text-align: center;
             border: 1px solid #bdc3c7;
@@ -132,38 +108,31 @@
     <div class="control-panel">
         <div class="header">
             <h1>Панель керування</h1>
-            <p>Завдання A.1.4: Операції над векторами</p>
-        </div>
-
-        <div class="toggle-container">
-            <label>
-                <input type="checkbox" id="toggle-3d" checked>
-                Увімкнути 3D простір (Вісь Z)
-            </label>
+            <p>A.1.4: Операції над векторами</p>
         </div>
 
         <div class="vector-input">
             <div class="inline-vector">
                 <span class="vector-name">a</span> (
                 <input type="number" id="ax" value="2" step="0.5"> ;
-                <input type="number" id="ay" value="3" step="0.5"> 
-                <span class="z-coord">; <input type="number" id="az" value="1" step="0.5"></span> )
+                <input type="number" id="ay" value="3" step="0.5"> ;
+                <input type="number" id="az" value="1" step="0.5"> )
             </div>
         </div>
 
         <div class="vector-input">
             <div class="inline-vector">
                 <span class="vector-name">b</span> (
-                <input type="number" id="bx" value="4" step="0.5"> ;
-                <input type="number" id="by" value="0" step="0.5"> 
-                <span class="z-coord">; <input type="number" id="bz" value="0" step="0.5"></span> )
+                <input type="number" id="bx" value="1" step="0.5"> ;
+                <input type="number" id="by" value="-2" step="0.5"> ;
+                <input type="number" id="bz" value="2" step="0.5"> )
             </div>
         </div>
 
         <div class="operations">
             <button class="btn" id="btn-add">Додавання (a + b)</button>
             <button class="btn" id="btn-sub">Віднімання (a - b)</button>
-            <button class="btn" id="btn-dot">Скалярний добуток (Проекція)</button>
+            <button class="btn" id="btn-dot">Скалярний добуток</button>
         </div>
 
         <div class="result-panel">
@@ -175,18 +144,14 @@
     </div>
 
     <div class="scene-container" id="canvas-area">
-        <div class="hint">Затисніть ліву кнопку миші для обертання сцени</div>
+        <div class="hint">Затисніть ліву кнопку миші для обертання сцени навколо осі Y</div>
 
         <a-scene embedded background="color: #1e1e1e">
             <a-light type="ambient" color="#777"></a-light>
             <a-light type="directional" position="5 10 7" intensity="0.8"></a-light>
 
             <a-entity id="space-rotator" rotation="0 35 0">
-                
-                <a-plane id="floor-plane" width="20" height="20" color="#2c2c2c" material="opacity: 0.4; transparent: true" rotation="-90 0 0" side="double"></a-plane>
-                
-                <a-plane id="grid-xy" width="20" height="20" color="#333" wireframe="true" position="0 0 -0.01" visible="false"></a-plane>
-
+                                
                 <a-sphere color="white" radius="0.1" position="0 0 0"></a-sphere>
 
                 <a-entity>
@@ -201,7 +166,7 @@
                     <a-text value="Y" color="#2ed573" position="0.4 10.5 0" scale="3 3 3" align="center" side="double"></a-text>
                 </a-entity>
 
-                <a-entity id="axis-z">
+                <a-entity>
                     <a-cylinder color="#1e90ff" radius="0.03" height="10" position="0 0 5" rotation="90 0 0"></a-cylinder>
                     <a-cone color="#1e90ff" radius-bottom="0.12" height="0.4" position="0 0 10" rotation="90 0 0"></a-cone>
                     <a-text value="Z" color="#1e90ff" position="0 0.5 10.5" scale="3 3 3" align="center" side="double"></a-text>
@@ -217,6 +182,6 @@
         </a-scene>
     </div>
 
-    <script src="script.js"></script>
+    <script src="src/script.js"></script>
 </body>
 </html>
