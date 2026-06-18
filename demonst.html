@@ -28,6 +28,19 @@
         .header h1 { font-size: 1.3rem; color: #2c3e50; margin-bottom: 5px; }
         .header p { font-size: 0.85rem; color: #7f8c8d; }
         
+        .mode-toggle {
+            background: #e8f4f8;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .mode-toggle input { width: 18px; height: 18px; cursor: pointer; }
+
         .vector-input {
             background: #ffffff;
             padding: 12px;
@@ -111,21 +124,25 @@
             <p>A.1.4: Операції над векторами</p>
         </div>
 
+        <label class="mode-toggle">
+            <input type="checkbox" id="toggle-3d" checked> Увімкнути 3D (вісь Z)
+        </label>
+
         <div class="vector-input">
             <div class="inline-vector">
                 <span class="vector-name">a</span> (
                 <input type="number" id="ax" value="2" step="0.5"> ;
-                <input type="number" id="ay" value="3" step="0.5"> ;
-                <input type="number" id="az" value="1" step="0.5"> )
+                <input type="number" id="ay" value="3" step="0.5"> 
+                <span class="z-input">; <input type="number" id="az" value="1" step="0.5"></span> )
             </div>
         </div>
 
         <div class="vector-input">
             <div class="inline-vector">
                 <span class="vector-name">b</span> (
-                <input type="number" id="bx" value="1" step="0.5"> ;
-                <input type="number" id="by" value="-2" step="0.5"> ;
-                <input type="number" id="bz" value="2" step="0.5"> )
+                <input type="number" id="bx" value="5" step="0.5"> ;
+                <input type="number" id="by" value="1" step="0.5"> 
+                <span class="z-input">; <input type="number" id="bz" value="0" step="0.5"></span> )
             </div>
         </div>
 
@@ -154,19 +171,19 @@
                                 
                 <a-sphere color="white" radius="0.1" position="0 0 0"></a-sphere>
 
-                <a-entity>
+                <a-entity id="x-axis-group">
                     <a-cylinder color="#ff4757" radius="0.03" height="10" position="5 0 0" rotation="0 0 -90"></a-cylinder>
                     <a-cone color="#ff4757" radius-bottom="0.12" height="0.4" position="10 0 0" rotation="0 0 -90"></a-cone>
                     <a-text value="X" color="#ff4757" position="10.5 0.4 0" scale="3 3 3" align="center" side="double"></a-text>
                 </a-entity>
 
-                <a-entity>
+                <a-entity id="y-axis-group">
                     <a-cylinder color="#2ed573" radius="0.03" height="10" position="0 5 0"></a-cylinder>
                     <a-cone color="#2ed573" radius-bottom="0.12" height="0.4" position="0 10 0"></a-cone>
                     <a-text value="Y" color="#2ed573" position="0.4 10.5 0" scale="3 3 3" align="center" side="double"></a-text>
                 </a-entity>
 
-                <a-entity>
+                <a-entity id="z-axis-group">
                     <a-cylinder color="#1e90ff" radius="0.03" height="10" position="0 0 5" rotation="90 0 0"></a-cylinder>
                     <a-cone color="#1e90ff" radius-bottom="0.12" height="0.4" position="0 0 10" rotation="90 0 0"></a-cone>
                     <a-text value="Z" color="#1e90ff" position="0 0.5 10.5" scale="3 3 3" align="center" side="double"></a-text>
@@ -176,12 +193,12 @@
 
             </a-entity>
 
-            <a-entity position="0 7 13" rotation="-25 0 0">
+            <a-entity position="0 5 15" rotation="-15 0 0">
                 <a-camera look-controls="enabled: false" wasd-controls="enabled: false"></a-camera>
             </a-entity>
         </a-scene>
     </div>
 
-    <script src="src/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
